@@ -28,7 +28,7 @@ public class mainPlayer : MonoBehaviour {
 		 float x = Input.GetAxis ("Vertical")*speed;
 		float rotation = Input.GetAxis ("Horizontal") * rotationSpeed;
 		//transform.Translate (0, 0, x*Time.deltaTime);
-		//transform.Rotate (0,rotation*Time.deltaTime,0);
+		transform.Rotate (0,rotation*Time.deltaTime,0);
 		if (Input.GetKeyDown(KeyCode.LeftShift))
 			x *= 2;
 		anim.SetFloat ("speed", x);
