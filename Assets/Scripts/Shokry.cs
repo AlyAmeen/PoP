@@ -1,0 +1,41 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Shokry : MonoBehaviour {
+
+    bool right = false;
+    const float range = 5;
+    float speed = 6;
+    Vector3 startingPos;
+	// Use this for initialization
+	void Start () {
+        startingPos = transform.position;
+
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            other.gameObject.GetComponent<mainPlayer>().Die();
+        }
+    }
+    // Update is called once per frame
+    void Update () {
+        if (mainPlayer.stopTime)
+            return;
+		if (right)
+        {
+            transform.position += new Vector3(speed * Time.deltaTime,0,0);
+            if (  transform.position.x - startingPos.x > range)
+                right = !right;
+        }
+        else
+        {
+            transform.position -= new Vector3(speed * Time.deltaTime, 0, 0);
+            if ( transform.position.x < startingPos.x)
+                right = !right;
+        }
+        transform.Rotate(new Vector3(0, 0, 20 * Time.deltaTime));
+	}
+}
