@@ -1,0 +1,258 @@
+fileFormatVersion: 2
+guid: f5b5ee52ca1a94b428c18ba7276c24d9
+timeCreated: 1512815887
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: pCube19
+    100002: pCube33
+    100004: pCube36
+    100006: pCube37
+    100008: pCube38
+    100010: pCube39
+    100012: pCube40
+    100014: pCube41
+    100016: pCube42
+    100018: pCube44
+    100020: pCube45
+    100022: pCube46
+    100024: pCube47
+    100026: pCube48
+    100028: pCube49
+    100030: pCube50
+    100032: pCube51
+    100034: pCube52
+    100036: pCube53
+    100038: pCube54
+    100040: pCube55
+    100042: pCube56
+    100044: pCylinder10
+    100046: pCylinder11
+    100048: pCylinder2
+    100050: pCylinder7
+    100052: pCylinder8
+    100054: pCylinder9
+    100056: pPlane1
+    100058: //RootNode
+    400000: pCube19
+    400002: pCube33
+    400004: pCube36
+    400006: pCube37
+    400008: pCube38
+    400010: pCube39
+    400012: pCube40
+    400014: pCube41
+    400016: pCube42
+    400018: pCube44
+    400020: pCube45
+    400022: pCube46
+    400024: pCube47
+    400026: pCube48
+    400028: pCube49
+    400030: pCube50
+    400032: pCube51
+    400034: pCube52
+    400036: pCube53
+    400038: pCube54
+    400040: pCube55
+    400042: pCube56
+    400044: pCylinder10
+    400046: pCylinder11
+    400048: pCylinder2
+    400050: pCylinder7
+    400052: pCylinder8
+    400054: pCylinder9
+    400056: pPlane1
+    400058: //RootNode
+    2300000: pCube19
+    2300002: pCube33
+    2300004: pCube36
+    2300006: pCube37
+    2300008: pCube38
+    2300010: pCube39
+    2300012: pCube40
+    2300014: pCube41
+    2300016: pCube42
+    2300018: pCube44
+    2300020: pCube45
+    2300022: pCube46
+    2300024: pCube47
+    2300026: pCube48
+    2300028: pCube49
+    2300030: pCube50
+    2300032: pCube51
+    2300034: pCube52
+    2300036: pCube53
+    2300038: pCube54
+    2300040: pCube55
+    2300042: pCube56
+    2300044: pCylinder10
+    2300046: pCylinder11
+    2300048: pCylinder2
+    2300050: pCylinder7
+    2300052: pCylinder8
+    2300054: pCylinder9
+    2300056: pPlane1
+    3300000: pCube19
+    3300002: pCube33
+    3300004: pCube36
+    3300006: pCube37
+    3300008: pCube38
+    3300010: pCube39
+    3300012: pCube40
+    3300014: pCube41
+    3300016: pCube42
+    3300018: pCube44
+    3300020: pCube45
+    3300022: pCube46
+    3300024: pCube47
+    3300026: pCube48
+    3300028: pCube49
+    3300030: pCube50
+    3300032: pCube51
+    3300034: pCube52
+    3300036: pCube53
+    3300038: pCube54
+    3300040: pCube55
+    3300042: pCube56
+    3300044: pCylinder10
+    3300046: pCylinder11
+    3300048: pCylinder2
+    3300050: pCylinder7
+    3300052: pCylinder8
+    3300054: pCylinder9
+    3300056: pPlane1
+    4300000: pPlane1
+    4300002: pCube19
+    4300004: pCylinder2
+    4300006: pCube33
+    4300008: pCube36
+    4300010: pCube37
+    4300012: pCylinder7
+    4300014: pCylinder8
+    4300016: pCylinder9
+    4300018: pCube38
+    4300020: pCube39
+    4300022: pCube40
+    4300024: pCube41
+    4300026: pCube42
+    4300028: pCylinder10
+    4300030: pCylinder11
+    4300032: pCube44
+    4300034: pCube45
+    4300036: pCube46
+    4300038: pCube47
+    4300040: pCube48
+    4300042: pCube49
+    4300044: pCube50
+    4300046: pCube51
+    4300048: pCube52
+    4300050: pCube53
+    4300052: pCube54
+    4300054: pCube55
+    4300056: pCube56
+    9500000: //RootNode
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert1
+    second: {fileID: 2100000, guid: d21688ec3601e48ce9967ba0d59a77c6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: main_fr_wall_mat
+    second: {fileID: 2100000, guid: a7e976f7c06b141cf815a38575d1e1a5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: sandstone_pillars_mat
+    second: {fileID: 2100000, guid: 4a058abe94b944d3495ddad380008845, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: sandy_floor_mat
+    second: {fileID: 2100000, guid: 2eade8674826f446db53fbe8c19bff3b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: stone_blocks_mat
+    second: {fileID: 2100000, guid: d9cff7f0d64854bf8ab28953c7477f67, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
