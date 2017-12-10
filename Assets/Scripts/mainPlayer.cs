@@ -18,7 +18,7 @@ public class mainPlayer : MonoBehaviour {
     float sandOfTimeTimer = 0;
 
     float stopRotation = 0;
-    bool isDead = false;
+    public bool isDead = false;
     bool attack = false;
 
     Vector3 savedWallNormal;
@@ -26,10 +26,18 @@ public class mainPlayer : MonoBehaviour {
     public PlayableAsset wallRunLeft;
 
     public TimelineAsset TimlineAsset;
+
+    float stopControlsAttack = 0;
+
+    bool isBlocking = false;
+    bool hitEnemyFrame = false;
+
+    GameObject[] enemies;
     // Use this for initialization
     void Start () {
 		anim = GetComponent<Animator> ();
 		director = GetComponent<PlayableDirector> ();
+        enemies = GameObject.FindGameObjectsWithTag("Enemy");
 	}
 	void OnTriggerEnter(Collider c){
 		
@@ -52,11 +60,53 @@ public class mainPlayer : MonoBehaviour {
         isDead = true;
         anim.SetTrigger("Dead");
     }
+    public void GetHit()
+    {
+
+        if (isBlocking)
+            return;
+        health -= 10;
+        if (health <= 0)
+            Die();
+
+    }
+    void HitEnemy()
+    {
+        foreach (GameObject enemy in enemies)
+        {
+            patrolGuard g = enemy.GetComponent<patrolGuard>();
+            // Calculate the vector pointing from the player to the enemy
+            Vector3 enemyDir = enemy.transform.position - transform.position;
+
+            float dis = Vector3.Distance(enemy.transform.position, transform.position);
+            // Calculate the angle between the forward vector of the player and the vector pointing to the enemy
+            float angle = Vector3.Angle(transform.forward, enemyDir);
+            if (angle <= 90 && dis <= 4 && !g.IsDead)
+            {
+                g.GetHit();
+            }
+        }
+
+    }
     // Update is called once per frame
     void Update() {
 
         if (isDead)
             return;
+        stopControlsAttack -= Time.deltaTime;
+        if (stopControlsAttack > 0)
+        {
+            if (stopControlsAttack < 0.4f && !hitEnemyFrame)
+            {
+                hitEnemyFrame = true;
+                HitEnemy();
+
+
+            }
+            anim.SetBool("attack2", false);
+            return;
+        }
+      
         float x = Input.GetAxis("Vertical") * speed;
         //x = Input.GetAxis ("Horizontal") * rotationSpeed;
         //transform.Translate (0, 0, x*Time.deltaTime);
@@ -181,17 +231,20 @@ public class mainPlayer : MonoBehaviour {
         } 
 
 		if (Input.GetMouseButtonDown (1)) {
+            isBlocking = true;
             anim.SetBool("block",true);
 		}
         if (Input.GetMouseButtonUp(1))
         {
+            isBlocking = false;
             anim.SetBool("block",false);
         }
         attack = false;
         if (Input.GetMouseButtonDown (0)) {
-            attack = true;
+            stopControlsAttack = 0.65f ;
+            hitEnemyFrame = false;
+            anim.SetBool("attack2", true);
 
         }
-        anim.SetBool("attack2", attack);
     }
 }
