@@ -951,7 +951,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1609103261353030
 GameObject:
   m_ObjectHideFlags: 1
@@ -2829,6 +2829,11 @@ MonoBehaviour:
   director: {fileID: 320682389756115518}
   target: {fileID: 0}
   player: {fileID: 4626360679612238}
+  mask:
+    serializedVersion: 2
+    m_Bits: 0
+  wallRunLeft: {fileID: 0}
+  wallRunRight: {fileID: 0}
 --- !u!136 &136141460023193334
 CapsuleCollider:
   m_ObjectHideFlags: 1

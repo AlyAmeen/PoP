@@ -49,10 +49,10 @@ public class TPSCamera : MonoBehaviour
         if (Physics.Linecast( lookAt.transform.position, position, out wallHit,mask))
         {
 
-            Debug.Log(wallHit.transform.name);
+
             //the x and z coordinates are pushed away from the wall by hit.normal.
             //the y coordinate stays the same.
-            position = new Vector3(wallHit.point.x + wallHit.normal.x * 0.5f, position.y, wallHit.point.z + wallHit.normal.z * 0.5f);
+            position = new Vector3(wallHit.point.x + wallHit.normal.x * 1, position.y, wallHit.point.z + wallHit.normal.z * 1);
         }
 
         #endregion

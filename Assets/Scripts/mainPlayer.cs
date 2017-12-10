@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.Playables;
 using UnityEngine;
-
+using UnityEngine.Timeline;
 public class mainPlayer : MonoBehaviour {
 	Animator anim;
 	public float speed=2.0f;
@@ -13,13 +13,21 @@ public class mainPlayer : MonoBehaviour {
     public static bool stopTime = false;
 
     float health = 100;
-    float sandOfTimes =5;
+    int sandOfTimes =5;
 
     float sandOfTimeTimer = 0;
 
     float stopRotation = 0;
-	// Use this for initialization
-	void Start () {
+    bool isDead = false;
+    bool attack = false;
+
+    Vector3 savedWallNormal;
+    public LayerMask mask;
+    public PlayableAsset wallRunLeft;
+
+    public TimelineAsset TimlineAsset;
+    // Use this for initialization
+    void Start () {
 		anim = GetComponent<Animator> ();
 		director = GetComponent<PlayableDirector> ();
 	}
@@ -30,22 +38,32 @@ public class mainPlayer : MonoBehaviour {
 			Debug.Log ("position" + player.position + "Target" + target.position);
 			director.Play();
 		}
-	}
+        if (c.gameObject.CompareTag("Collectible"))
+        {
+            GameObject.Destroy(c.gameObject);
+            sandOfTimes++;  
+        }
+    }
     public void Die()
     {
-        //player should die here
-        Debug.Log("Dead");  
+        if (isDead)
+            return;
+        Debug.Log("dead");
+        isDead = true;
+        anim.SetTrigger("Dead");
     }
-	// Update is called once per frame
-	void Update () {
-     
-        float x = Input.GetAxis ("Vertical")*speed;
+    // Update is called once per frame
+    void Update() {
+
+        if (isDead)
+            return;
+        float x = Input.GetAxis("Vertical") * speed;
         //x = Input.GetAxis ("Horizontal") * rotationSpeed;
         //transform.Translate (0, 0, x*Time.deltaTime);
         var CharacterRotation = Camera.main.transform.rotation;
-        
 
-        float z = Input.GetAxis("Horizontal") ;
+
+        float z = Input.GetAxis("Horizontal");
 
         CharacterRotation.x = 0;
         CharacterRotation.z = 0;
@@ -54,20 +72,81 @@ public class mainPlayer : MonoBehaviour {
 
         CharacterRotation.eulerAngles = new Vector3(angle.x, angle.y + (z * 90), angle.z);
 
-        
-            transform.rotation = CharacterRotation;
-        if (Input.GetKey(KeyCode.LeftShift))
-			x *= 3;
 
-        if (x > 0 && Mathf.Abs(z)> 0)
+
+        if (Input.GetKey(KeyCode.LeftShift))
+            x *= 3;
+
+        if (x > 0 && Mathf.Abs(z) > 0)
         {
             x /= 2f;
-            z /= 2f;    
+            z /= 2f;
         }
+
+        anim.SetFloat("speed", x + Mathf.Abs(speed * z));
+
+        if (director.state == PlayState.Paused)
+        {
+            transform.rotation = CharacterRotation;
+
+        }
+        else
+            transform.forward = savedWallNormal;
+        RaycastHit wallHit;
+        if (Physics.Linecast(transform.position + new Vector3(0, 5, 0), transform.position + new Vector3(0, 5, 0) + (transform.forward * 5), out wallHit, mask))
+        {
+            Debug.Log(wallHit.collider.gameObject.name);
+        }
+
+            Debug.DrawLine(transform.position + new Vector3(0, 1, 0), transform.position + new Vector3(0, 1, 0) + (transform.forward * 5));
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+         
+        
+            if (Physics.Linecast(transform.position + new Vector3(0, 5, 0), transform.position + new Vector3(0, 5, 0) + (transform.forward * 2), out wallHit, mask))
+            {
+                Debug.Log("hIT");
+                Vector3 normal = wallHit.normal;
+                //if optuse or acute using dot product
+                float ag = Mathf.PI / 2f;
+                normal.z = wallHit.normal.z * Mathf.Cos(ag) - wallHit.normal.x * Mathf.Sin(ag);
+                normal.x = wallHit.normal.z * Mathf.Sin(ag) + wallHit.normal.x * Mathf.Cos(ag);
+                transform.position = new Vector3(wallHit.point.x + wallHit.normal.x * 0.5f, transform.position.y, wallHit.point.z + wallHit.normal.z * 0.5f);
+                float dotProduct = Vector3.Dot(normal, transform.forward);
+                if (dotProduct < 0)
+                {
      
-		anim.SetFloat ("speed", x + Mathf.Abs(speed * z));
-	
-        if (Input.GetKeyDown(KeyCode.Q))
+                    ag = -ag;
+
+                    normal.z = wallHit.normal.z * Mathf.Cos(ag) - wallHit.normal.x * Mathf.Sin(ag);
+                    normal.x = wallHit.normal.z * Mathf.Sin(ag) + wallHit.normal.x * Mathf.Cos(ag);
+                
+                    director.playableAsset = wallRunLeft;
+                    director.SetGenericBinding(wallRunLeft, gameObject);
+                    director.Play();
+                    transform.forward = normal;
+                    savedWallNormal = normal;
+                }
+                else
+                {
+                    director.playableAsset = TimlineAsset;
+                    foreach (var playableAssetOutput in director.playableAsset.outputs)
+                    {
+                            director.SetGenericBinding(playableAssetOutput.sourceObject, gameObject );
+                    }
+                    director.Play();
+                    director.Play();
+                    transform.forward = normal;
+                    savedWallNormal = normal;
+                }
+                wallHit.normal = normal;
+                Debug.DrawLine(wallHit.point, new Vector3(wallHit.point.x + wallHit.normal.x * 3,
+       wallHit.point.y, wallHit.point.z + wallHit.normal.z * 3));
+             
+            }
+        }
+      
+            if (Input.GetKeyDown(KeyCode.Q))
         {
             if (sandOfTimes >0)
             {
@@ -108,9 +187,11 @@ public class mainPlayer : MonoBehaviour {
         {
             anim.SetBool("block",false);
         }
+        attack = false;
         if (Input.GetMouseButtonDown (0)) {
-			anim.SetTrigger("attack");
-		}
+            attack = true;
 
-	}
+        }
+        anim.SetBool("attack2", attack);
+    }
 }

@@ -29,7 +29,10 @@ public class Spikes : MonoBehaviour {
             {
                 if (transform.localPosition.y < 5)
                     transform.position = transform.position + new Vector3(0, 10 * Time.deltaTime, 0);
-            
+            else
+                {
+                    transform.localPosition = new Vector3(transform.localPosition.x, 5, transform.localPosition.z);
+                }
             }
             if (timer >= timeToRaise + timeGoingUp)
             {
