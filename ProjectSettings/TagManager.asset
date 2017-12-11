@@ -8,6 +8,7 @@ TagManager:
   - Collectible
   - City
   - Enemy
+  - GameEnd
   layers:
   - Default
   - TransparentFX

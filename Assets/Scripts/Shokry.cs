@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Shokry : MonoBehaviour {
 
+    public bool invert = false;
     bool right = false;
-    const float range = 5;
-    float speed = 6;
+    public float range = 5;
+    float speed = 5;
     Vector3 startingPos;
 	// Use this for initialization
 	void Start () {
@@ -24,17 +25,35 @@ public class Shokry : MonoBehaviour {
     void Update () {
         if (mainPlayer.stopTime)
             return;
-		if (right)
+        if (invert)
         {
-            transform.position += new Vector3(speed * Time.deltaTime,0,0);
-            if (  transform.position.x - startingPos.x > range)
-                right = !right;
+            if (right)
+            {
+                transform.position += new Vector3(0, 0, speed * Time.deltaTime);
+                if (transform.position.z - startingPos.z > range)
+                    right = !right;
+            }
+            else
+            {
+                transform.position -= new Vector3(0,0,speed * Time.deltaTime);
+                if (transform.position.z < startingPos.z)
+                    right = !right;
+            }
         }
         else
         {
-            transform.position -= new Vector3(speed * Time.deltaTime, 0, 0);
-            if ( transform.position.x < startingPos.x)
-                right = !right;
+            if (right)
+            {
+                transform.position += new Vector3(speed * Time.deltaTime, 0, 0);
+                if (transform.position.x - startingPos.x > range)
+                    right = !right;
+            }
+            else
+            {
+                transform.position -= new Vector3(speed * Time.deltaTime, 0, 0);
+                if (transform.position.x < startingPos.x)
+                    right = !right;
+            }
         }
         transform.Rotate(new Vector3(0, 0, 20 * Time.deltaTime));
 	}

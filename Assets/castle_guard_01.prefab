@@ -280,6 +280,7 @@ GameObject:
   - component: {fileID: 114463228635343600}
   - component: {fileID: 195722761666450152}
   - component: {fileID: 136175472141826554}
+  - component: {fileID: 143275060336176232}
   m_Layer: 0
   m_Name: castle_guard_01
   m_TagString: Enemy
@@ -950,8 +951,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1421241322221712}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 40.47, y: -7.92, z: -425.01}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 15.450001, y: 2.87, z: -267.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4634293680018894}
@@ -1280,7 +1281,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 10, y: 1, z: 10}
+  m_Size: {x: 20, y: 1, z: 20}
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!95 &95027496864187724
 Animator:
@@ -1316,6 +1317,8 @@ MonoBehaviour:
   player: {fileID: 0}
   giveUpThreshHold: 25
   anim: {fileID: 95027496864187724}
+  sandCollect: {fileID: 1740654695988326, guid: da65bb015c5b8fe428ba31e61e1eded9,
+    type: 2}
 --- !u!136 &136175472141826554
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -1324,7 +1327,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1421241322221712}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
@@ -1414,6 +1417,23 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.004722178, y: 0.038705587, z: 0.033445217}
     m_Extent: {x: 1.2684126, y: 1.0580086, z: 0.2718361}
   m_DirtyAABB: 0
+--- !u!143 &143275060336176232
+CharacterController:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1421241322221712}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!195 &195722761666450152
 NavMeshAgent:
   m_ObjectHideFlags: 1

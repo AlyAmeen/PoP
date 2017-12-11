@@ -11,15 +11,15 @@ public class patrolGuard : MonoBehaviour {
 	private int destPoint = 0;
 	private NavMeshAgent agent;
 	public mainPlayer player;
-    enum State { Chasing, Attacking, Idle,Dead }
+    public  enum State { Chasing, Attacking, Idle,Dead }
     State currentState = State.Idle;
-
+    public State CurrentState {  get { return currentState; } }
     public bool IsDead
     {
         get { return currentState == State.Dead; }
     }
 
-	public float giveUpThreshHold= 25f;
+	public float giveUpThreshHold= 15;
 	private float attackRepeat = 2;
 	private float attackThreshHold=2.5f;
 	//private float attackSpeed= 3f;
@@ -42,12 +42,12 @@ public class patrolGuard : MonoBehaviour {
 	void Start () {
         startingPos = transform.position;
         agent = GetComponent<NavMeshAgent>();
-		//player = GameObject.FindGameObjectsWithTag ("pp ");
-
-		// Disabling auto-braking allows for continuous movement
-		// between points (ie, th e agent doesn't slow down as it
-		// approaches a destination point).
-		anim.SetBool("isAattacking",false);
+        //player = GameObject.FindGameObjectsWithTag ("pp ");
+        giveUpThreshHold *= points.Length;
+        // Disabling auto-braking allows for continuous movement
+        // between points (ie, th e agent doesn't slow down as it
+        // approaches a destination point).
+        anim.SetBool("isAattacking",false);
 		anim.SetBool("isRunning",false);
 		agent.autoBraking = false;
 
@@ -74,14 +74,17 @@ public class patrolGuard : MonoBehaviour {
 
 	void Update () {
 
-        if (mainPlayer.stopTime && currentState != State.Dead)
+        if (mainPlayer.stopTime && currentState != State.Dead && !timeWasStopped)
         {
+            //this is the first frame we stop time, let's save the states
             saveAgentState = agent.isStopped;
             agent.isStopped = true;
             anim.enabled = false;
             timeWasStopped = true;
             return;
         }
+        if (mainPlayer.stopTime)
+            return; 
         if (timeWasStopped)
         {
             timeWasStopped = false;
@@ -100,6 +103,8 @@ public class patrolGuard : MonoBehaviour {
         // Choose the next destination point when the agent gets
         // close to the current one.
         // Debug.Log(currentState);
+
+        Debug.Log(currentState);
         if (currentState == State.Idle)
         {
             if (!agent.pathPending && agent.remainingDistance < 0.5f)
@@ -107,13 +112,15 @@ public class patrolGuard : MonoBehaviour {
         }
         else if (currentState == State.Chasing)
         {
-         
-                Vector3 p = target.transform.position;
-                Vector3 c = agent.transform.position;
-                float distance = Vector3.Distance(p, c);
-
-                transform.LookAt(player.transform);
-                if (distance > giveUpThreshHold)
+            Camera.main.GetComponent<TPSCamera>().ChangeTracks();
+            Vector3 p = target.transform.position;
+            Vector3 c = agent.transform.position;
+            float distance = Vector3.Distance(p, c);
+            agent.destination = player.transform.position;
+            transform.LookAt(player.transform);
+            Vector3 angle = transform.rotation.eulerAngles;
+            transform.rotation = Quaternion.Euler(new Vector3(0,  angle.y, angle.z));
+            if (Vector3.Distance(startingPos,transform.position) > giveUpThreshHold)
                 {
                     //isAattacking=false;
                     //isRunning = false;
@@ -123,6 +130,7 @@ public class patrolGuard : MonoBehaviour {
                     //anim.SetBool("isDead",false);
                     //isWatchingPlayer= false;
                     currentState = State.Idle;
+                GotoNextPoint();
                     Debug.Log("F3");
                 }
                 if (distance < attackThreshHold && isplayerVis())
@@ -136,6 +144,8 @@ public class patrolGuard : MonoBehaviour {
             agent.isStopped = true;
 
             transform.LookAt(player.transform);
+            Vector3 angle = transform.rotation.eulerAngles;
+            transform.rotation = Quaternion.Euler(new Vector3(0, angle.y, angle.z));
             Vector3 p = target.transform.position;
             Vector3 c = agent.transform.position;
             float distance = Vector3.Distance(p, c);
@@ -174,7 +184,10 @@ public class patrolGuard : MonoBehaviour {
     }
     public void HitPlayer()
     {
-        Debug.Log("neber");
+        Vector3 p = target.transform.position;
+        Vector3 c = agent.transform.position;
+        float distance = Vector3.Distance(p, c);
+        if (distance < attackThreshHold)
         player.GetHit();
     }
     public void GetHit()
@@ -186,7 +199,7 @@ public class patrolGuard : MonoBehaviour {
             anim.enabled = true;
             GameObject sandObject = GameObject.Instantiate(sandCollect);
             sandObject.transform.position = transform.position + new Vector3(0,0.5f,0);
-            GetComponent<CapsuleCollider>().enabled = false;
+            GetComponent<CharacterController>().enabled = false;
 
         }
     }
@@ -196,7 +209,7 @@ public class patrolGuard : MonoBehaviour {
             return;
 		if (c.gameObject.CompareTag ("Player")) {
             Debug.Log("Happens");
-			if (isplayerVis() && currentState != State.Attacking && !player.isDead) {
+			if (isplayerVis() && currentState != State.Attacking && !player.isDead && Vector3.Distance(startingPos, transform.position) < giveUpThreshHold) {
 				//chase
 				//isAattacking=false;
 				//isRunning = true;
@@ -224,7 +237,8 @@ public class patrolGuard : MonoBehaviour {
         Vector3 dir = player.transform.position - transform.position;
         dir.y = 0;
         dir.Normalize();
-		if (Physics.Raycast (transform.position, dir , out hit)) {
+        Debug.DrawLine(transform.position, transform.position + (dir * 10));
+		if (Physics.Raycast (transform.position + new Vector3(0,1,0), dir , out hit)) {
 
 			return (hit.collider.gameObject.CompareTag ("Player"));
 

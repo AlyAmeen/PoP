@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.Playables;
 using UnityEngine;
 using UnityEngine.Timeline;
+using UnityEngine.UI;
 public class mainPlayer : MonoBehaviour {
 	Animator anim;
 	public float speed=2.0f;
@@ -13,11 +14,11 @@ public class mainPlayer : MonoBehaviour {
     public static bool stopTime = false;
 
     float health = 100;
-    int sandOfTimes =5;
+    int sandOfTimes = 0;
 
     float sandOfTimeTimer = 0;
 
-    float stopRotation = 0;
+    float rollTime = 0;
     public bool isDead = false;
     bool attack = false;
 
@@ -30,32 +31,71 @@ public class mainPlayer : MonoBehaviour {
     float stopControlsAttack = 0;
 
     bool isBlocking = false;
+    bool isRolling = false;
     bool hitEnemyFrame = false;
 
     GameObject[] enemies;
+
+    bool jumping = false;
+    float jumpingTimer = 0.5f;
+    public HitEffect hitEffect;
+
+    float gameOverTimer = 0;
+    public Text playerHealthText;
+    public Text sandOfTimeText;
+
+    public AudioClip footSteps;
+    public AudioClip die;
+    public AudioClip collectible;
+
+    AudioSource mySource;
     // Use this for initialization
     void Start () {
 		anim = GetComponent<Animator> ();
 		director = GetComponent<PlayableDirector> ();
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
-	}
+        mySource = GetComponent<AudioSource>();
+
+        mySource.clip = footSteps;
+
+    }
 	void OnTriggerEnter(Collider c){
 		
-		if (c.gameObject.CompareTag ("floorend")) {
-			player.position = new Vector3(target.position.x + 0.001f, 0, target.position.z-1.0f);
-			Debug.Log ("position" + player.position + "Target" + target.position);
-			director.Play();
-		}
+	
         if (c.gameObject.CompareTag("Collectible"))
         {
             GameObject.Destroy(c.gameObject);
             sandOfTimes++;  
         }
+        bool allEnemiesDead = true;
+        Debug.Log(enemies.Length);
+        if (c.gameObject.CompareTag("GameEnd"))
+        {
+            foreach (GameObject e in enemies)
+            {
+                if (e.GetComponent<patrolGuard>().enabled == true)
+                {
+                    Debug.Log("Shit");
+                    allEnemiesDead = false;
+                    break;
+                }
+
+
+            }
+            if (allEnemiesDead)
+            {
+
+                Application.LoadLevel(Application.loadedLevel + 1);
+            }
+        }
+      
     }
     public void Die()
     {
         if (isDead)
             return;
+
+        mySource.PlayOneShot(die);
         Debug.Log("dead");
         isDead = true;
         anim.SetTrigger("Dead");
@@ -63,8 +103,10 @@ public class mainPlayer : MonoBehaviour {
     public void GetHit()
     {
 
-        if (isBlocking)
+        if (isBlocking || rollTime > 0)
             return;
+
+        hitEffect.GotHit();
         health -= 10;
         if (health <= 0)
             Die();
@@ -92,8 +134,16 @@ public class mainPlayer : MonoBehaviour {
     void Update() {
 
         if (isDead)
+        {
+            gameOverTimer += Time.deltaTime;
+            if (gameOverTimer >= 5)
+                Application.LoadLevel("gameOver");
             return;
-        stopControlsAttack -= Time.deltaTime;
+        }
+        playerHealthText.text = "Player Health " + health;
+        sandOfTimeText.text = "Sands of time " + sandOfTimes;
+
+    stopControlsAttack -= Time.deltaTime;
         if (stopControlsAttack > 0)
         {
             if (stopControlsAttack < 0.4f && !hitEnemyFrame)
@@ -106,20 +156,36 @@ public class mainPlayer : MonoBehaviour {
             anim.SetBool("attack2", false);
             return;
         }
-      
+        if (jumping)
+        {
+            jumpingTimer -= Time.deltaTime;
+            if (jumpingTimer <= 0)
+                jumping = false;
+        }
+        if (!GetComponent<CharacterController>().isGrounded && director.state == PlayState.Paused
+            && !jumping)
+        {
+            Vector3 vel = Vector3.zero;
+            float vSpeed = 0;
+            // apply gravity acceleration to vertical speed:
+            vSpeed -= 64 * Time.deltaTime;
+            vel.y = vSpeed; // include vertical speed in vel
+                            // convert vel to displacement and Move the character:
+            GetComponent<CharacterController>().Move(vel * Time.deltaTime);
+        }
         float x = Input.GetAxis("Vertical") * speed;
         //x = Input.GetAxis ("Horizontal") * rotationSpeed;
         //transform.Translate (0, 0, x*Time.deltaTime);
         var CharacterRotation = Camera.main.transform.rotation;
 
-
+       
         float z = Input.GetAxis("Horizontal");
 
         CharacterRotation.x = 0;
         CharacterRotation.z = 0;
         Vector3 angle = CharacterRotation.eulerAngles;
-        stopRotation -= Time.deltaTime;
-
+        rollTime -= Time.deltaTime;
+     
         CharacterRotation.eulerAngles = new Vector3(angle.x, angle.y + (z * 90), angle.z);
 
 
@@ -127,6 +193,11 @@ public class mainPlayer : MonoBehaviour {
         if (Input.GetKey(KeyCode.LeftShift))
             x *= 3;
 
+        mySource.pitch = Mathf.Clamp(x,2.5f,4);
+        if (x > 0 && !mySource.isPlaying)
+            mySource.Play();
+        else
+            mySource.Pause();
         if (x > 0 && Mathf.Abs(z) > 0)
         {
             x /= 2f;
@@ -143,7 +214,8 @@ public class mainPlayer : MonoBehaviour {
         else
             transform.forward = savedWallNormal;
         RaycastHit wallHit;
-        if (Physics.Linecast(transform.position + new Vector3(0, 5, 0), transform.position + new Vector3(0, 5, 0) + (transform.forward * 5), out wallHit, mask))
+        if (Physics.Linecast(transform.position + new Vector3(0, 1.5f, 0),
+            transform.position + new Vector3(0, 1.5f, 0) + (transform.forward * 5), out wallHit, mask))
         {
             Debug.Log(wallHit.collider.gameObject.name);
         }
@@ -153,7 +225,7 @@ public class mainPlayer : MonoBehaviour {
         {
          
         
-            if (Physics.Linecast(transform.position + new Vector3(0, 5, 0), transform.position + new Vector3(0, 5, 0) + (transform.forward * 2), out wallHit, mask))
+            if (Physics.Linecast(transform.position + new Vector3(0, 1.5f, 0), transform.position + new Vector3(0, 1.5f, 0) + (transform.forward * 1.5f), out wallHit, mask))
             {
                 Debug.Log("hIT");
                 Vector3 normal = wallHit.normal;
@@ -198,11 +270,13 @@ public class mainPlayer : MonoBehaviour {
       
             if (Input.GetKeyDown(KeyCode.Q))
         {
+       
             if (sandOfTimes >0)
             {
                 sandOfTimes -= 1;
-                sandOfTimeTimer = 3;
+                sandOfTimeTimer = 5;
                 stopTime = true;
+                mySource.PlayOneShot(collectible);
             }
         }
         if (stopTime)
@@ -216,6 +290,8 @@ public class mainPlayer : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.Space) && !anim.GetBool("jump")) {
 			Debug.Log ("TRUEEE");
 			anim.SetBool ("jump",true);
+            jumping = true;
+            jumpingTimer = 0.4f;
 
 		} 
 		else if (Input.GetKeyUp (KeyCode.Space) && anim.GetBool("jump")) {
@@ -224,8 +300,10 @@ public class mainPlayer : MonoBehaviour {
 
 		} 
 		if (Input.GetKeyDown (KeyCode.R)) {
-			anim.SetTrigger("roll");
-            stopRotation = 3;
+            isRolling = true;
+
+            anim.SetTrigger("roll");
+            rollTime = 0.7f;
 
 
         } 
@@ -241,7 +319,7 @@ public class mainPlayer : MonoBehaviour {
         }
         attack = false;
         if (Input.GetMouseButtonDown (0)) {
-            stopControlsAttack = 0.65f ;
+            stopControlsAttack = 1.05F ;
             hitEnemyFrame = false;
             anim.SetBool("attack2", true);
 
