@@ -953,7 +953,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1421241322221712}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 61.960003, y: 2.87, z: -273.3}
+  m_LocalPosition: {x: -10.829998, y: 0.07999992, z: -297.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4634293680018894}
@@ -1395,10 +1395,6 @@ MonoBehaviour:
   points:
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   player: {fileID: 0}
   giveUpThreshHold: 25
   anim: {fileID: 95027496864187724}
@@ -1406,7 +1402,7 @@ MonoBehaviour:
     type: 2}
   walking: {fileID: 8300000, guid: ffb6706b354fa2e42b54c94a7fd400b6, type: 3}
   hitClip: {fileID: 0}
-  dieClip: {fileID: 0}
+  dieClip: {fileID: 8300000, guid: 6520c91d29ca306488364aed81a7c4b2, type: 3}
 --- !u!136 &136175472141826554
 CapsuleCollider:
   m_ObjectHideFlags: 1
