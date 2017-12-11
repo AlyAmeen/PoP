@@ -319,9 +319,9 @@ public class mainPlayer : MonoBehaviour {
         }
         attack = false;
         if (Input.GetMouseButtonDown (0)) {
-            stopControlsAttack = 1.05F ;
+            stopControlsAttack = 0.8f ;
             hitEnemyFrame = false;
-            anim.SetBool("attack2", true);
+            anim.SetTrigger("attack");
 
         }
     }

@@ -1010,6 +1010,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114463228635343600, guid: d02aecaa2e1766f40acb52998337f765,
+        type: 2}
+      propertyPath: points.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4440842965135486, guid: d02aecaa2e1766f40acb52998337f765, type: 2}
       propertyPath: m_LocalPosition.x
       value: 15.450001
@@ -1060,6 +1065,16 @@ Prefab:
     - target: {fileID: 1421241322221712, guid: d02aecaa2e1766f40acb52998337f765, type: 2}
       propertyPath: m_Name
       value: castle_guard_01 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 82015665138584866, guid: d02aecaa2e1766f40acb52998337f765,
+        type: 2}
+      propertyPath: Loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 82015665138584866, guid: d02aecaa2e1766f40acb52998337f765,
+        type: 2}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d02aecaa2e1766f40acb52998337f765, type: 2}
@@ -3042,11 +3057,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114463228635343600, guid: d02aecaa2e1766f40acb52998337f765,
-        type: 2}
-      propertyPath: points.Array.size
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 4440842965135486, guid: d02aecaa2e1766f40acb52998337f765, type: 2}
       propertyPath: m_LocalPosition.x
       value: 61.960003
@@ -3091,15 +3101,6 @@ Prefab:
       objectReference: {fileID: 727312428}
     - target: {fileID: 114463228635343600, guid: d02aecaa2e1766f40acb52998337f765,
         type: 2}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 1096189735}
-    - target: {fileID: 1421241322221712, guid: d02aecaa2e1766f40acb52998337f765, type: 2}
-      propertyPath: m_Name
-      value: castle_guard_01 (6)
-      objectReference: {fileID: 0}
-    - target: {fileID: 114463228635343600, guid: d02aecaa2e1766f40acb52998337f765,
-        type: 2}
       propertyPath: points.Array.data[2]
       value: 
       objectReference: {fileID: 852330942}
@@ -3118,6 +3119,15 @@ Prefab:
       propertyPath: points.Array.data[5]
       value: 
       objectReference: {fileID: 1511547557}
+    - target: {fileID: 114463228635343600, guid: d02aecaa2e1766f40acb52998337f765,
+        type: 2}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1096189735}
+    - target: {fileID: 1421241322221712, guid: d02aecaa2e1766f40acb52998337f765, type: 2}
+      propertyPath: m_Name
+      value: castle_guard_01 (6)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d02aecaa2e1766f40acb52998337f765, type: 2}
   m_IsPrefabParent: 0
@@ -4578,6 +4588,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114463228635343600, guid: d02aecaa2e1766f40acb52998337f765,
+        type: 2}
+      propertyPath: points.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4440842965135486, guid: d02aecaa2e1766f40acb52998337f765, type: 2}
       propertyPath: m_LocalPosition.x
       value: -10.829998

@@ -39,6 +39,12 @@ public class patrolGuard : MonoBehaviour {
 
     bool timeWasStopped = true;
     bool saveAgentState = false;
+
+    public AudioClip walking;
+    public AudioClip hitClip;
+    public AudioClip dieClip;
+
+    AudioSource mySrc;
 	void Start () {
         startingPos = transform.position;
         agent = GetComponent<NavMeshAgent>();
@@ -52,6 +58,9 @@ public class patrolGuard : MonoBehaviour {
 		agent.autoBraking = false;
 
 		GotoNextPoint();
+
+        mySrc = GetComponent<AudioSource>();
+        mySrc.clip = walking;
 	}
 
 
@@ -74,6 +83,25 @@ public class patrolGuard : MonoBehaviour {
 
 	void Update () {
 
+        if (currentState == State.Dead)
+        {
+
+            anim.SetBool("isAattacking", false);
+            anim.SetBool("isRunning", false);
+            anim.SetTrigger("isDead2");
+            enabled = false;
+            return;
+        }
+        if (!agent.isStopped)
+        {
+            mySrc.pitch = 3;
+            if (!mySrc.isPlaying)
+                mySrc.Play();
+        }
+        else
+        {
+            mySrc.Pause();
+        }
         if (mainPlayer.stopTime && currentState != State.Dead && !timeWasStopped)
         {
             //this is the first frame we stop time, let's save the states
@@ -85,21 +113,13 @@ public class patrolGuard : MonoBehaviour {
         }
         if (mainPlayer.stopTime)
             return; 
-        if (timeWasStopped)
+        if (timeWasStopped && currentState != State.Dead)
         {
             timeWasStopped = false;
             anim.enabled = true;
             agent.isStopped = saveAgentState;
         }
-        if (currentState == State.Dead)
-        {
-            
-            anim.SetBool("isAattacking", false);
-            anim.SetBool("isRunning", false);
-            anim.SetTrigger("isDead2");
-            enabled = false;
-            return;
-        }
+      
         // Choose the next destination point when the agent gets
         // close to the current one.
         // Debug.Log(currentState);
@@ -192,9 +212,11 @@ public class patrolGuard : MonoBehaviour {
     }
     public void GetHit()
     {
+        mySrc.PlayOneShot(hitClip);
         hp -= 10;
         if (hp <= 0)
         {
+            mySrc.PlayOneShot(dieClip);
             currentState = State.Dead;
             anim.enabled = true;
             GameObject sandObject = GameObject.Instantiate(sandCollect);
