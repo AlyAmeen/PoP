@@ -14,33 +14,41 @@ public class mainMenu : MonoBehaviour {
 	public Slider musicSlider;
 	public Slider speechSlider;
 	public Slider effectsSlider;
-	//public AudioSource x;
+	AudioSource speech,effect1,effect2,effect3,effect4;
+	public AudioSource music;
 	// Use this for initialization
 	void Start () {
-		//x=GetComponent<AudioSource>();
 		Button btn = startButton.GetComponent<Button>();
 		btn.onClick.AddListener(TaskOnClick);
 		Button btn1 = quitButton.GetComponent<Button>();
 		btn1.onClick.AddListener(TaskOnClick1);
+		musicSlider.value = 0.5f;
+		speechSlider.value = 0.5f;
+		effectsSlider.value = 0.5f;
 		musicSlider.onValueChanged.AddListener(delegate {ValueChangeCheck(); });
 		speechSlider.onValueChanged.AddListener(delegate {ValueChangeCheck1(); });
 		effectsSlider.onValueChanged.AddListener(delegate {ValueChangeCheck2(); });
 		mydropdown.onValueChanged.AddListener(delegate{selectvalue(mydropdown);});
+		music = GetComponent<AudioSource> ();
+		//audio = GetComponent<AudioSource> ();
+		
+		//audio.Play();
+		//audio.bypassEffects = false;
+	    Camera.main.GetComponent<AudioSource>().Play();
 	}
 	public void ValueChangeCheck()
-	{
-		Debug.Log("MUSICCCC"+musicSlider.value);
-		//x.volume = musicSlider.value;
+	{   
+		music.volume = musicSlider.value;
+		PlayerPrefs.SetFloat ("music", music.volume);
 	}
 	public void ValueChangeCheck1()
 	{
-		Debug.Log("SPEECH"+speechSlider.value);
-		//x.volume = speechSlider.value;
-	}
+
+        PlayerPrefs.SetFloat("speech", speechSlider.value);
+    }
 	public void ValueChangeCheck2()
 	{
-		Debug.Log("EFFECTSS"+effectsSlider.value);
-		//x.volume = effectsSlider.value;
+		PlayerPrefs.SetFloat ("effect1", effectsSlider.value);
 	}
 	private void selectvalue(Dropdown gdropdown)
 	{
@@ -73,7 +81,7 @@ public class mainMenu : MonoBehaviour {
 	}
 	void TaskOnClick()
 	{
-		SceneManager.LoadScene("scenes/levelOne");
+		SceneManager.LoadScene("scenes/mainScene");
 
 	}
 	void TaskOnClick1()

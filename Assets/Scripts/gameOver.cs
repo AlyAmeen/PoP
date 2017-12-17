@@ -7,6 +7,7 @@ using UnityEngine;
 public class gameOver : MonoBehaviour {
 	public Button restartButton;
 	public Button quitButton;
+	AudioSource audio;
 	//public nav navScript;
 	// Use this for initialization
 
@@ -15,6 +16,8 @@ public class gameOver : MonoBehaviour {
 		btn.onClick.AddListener(TaskOnClick);
 		Button btn1 = quitButton.GetComponent<Button>(); 
 		btn1.onClick.AddListener(TaskOnClick1);
+		audio = GetComponent<AudioSource> ();
+		audio.Play();
 	}
 	void TaskOnClick(){
 		restartLevel.LoadLastScene();

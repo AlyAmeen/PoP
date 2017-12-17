@@ -12,11 +12,13 @@ public class pauseMenu : MonoBehaviour {
 	public Button quitButton;
 	// Use this for initialization
 	Button btn,btn1;
-	//public AudioSource main;
+	public AudioSource main;
+	AudioSource pauseAudio;
 	// Use this for initialization
 	void Start () {
 		pause = false;
-		//GetComponent<AudioSource>().Stop();
+		pauseAudio=GetComponent<AudioSource>();
+		pauseAudio.Stop ();
 		can.SetActive(pause);
 		btn = restartButton.GetComponent<Button>(); 
 		btn.onClick.AddListener(TaskOnClick);
@@ -41,12 +43,13 @@ public class pauseMenu : MonoBehaviour {
 			pause = !pause;
 			if (!pause) {
 				Time.timeScale = 1;
-				//GetComponent<AudioSource>().Stop();
-				//Camera.main.GetComponent<AudioSource> ().UnPause();
+				pauseAudio.Stop();
+				main.UnPause();
 			} else {
 				Time.timeScale = 0;
-				//Camera.main.GetComponent<AudioSource> ().Pause();
-				//GetComponent<AudioSource> ().Play();
+				main.Pause();
+				Debug.Log ("MAINNN" + main.isPlaying);
+				pauseAudio.Play();
 			}
 			can.SetActive(pause);
 

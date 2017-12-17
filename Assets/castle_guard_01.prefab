@@ -953,7 +953,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1421241322221712}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: -10.829998, y: 0.07999992, z: -297.01}
+  m_LocalPosition: {x: 15.450001, y: 2.87, z: -267.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4634293680018894}
@@ -1297,7 +1297,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -1333,7 +1333,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 2
       time: 0
-      value: 1
+      value: 0.75
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1401,8 +1401,9 @@ MonoBehaviour:
   sandCollect: {fileID: 1740654695988326, guid: da65bb015c5b8fe428ba31e61e1eded9,
     type: 2}
   walking: {fileID: 8300000, guid: ffb6706b354fa2e42b54c94a7fd400b6, type: 3}
-  hitClip: {fileID: 0}
+  hitClip: {fileID: 8300000, guid: 22064d68b7284074eac3653bf3c488d2, type: 3}
   dieClip: {fileID: 8300000, guid: 6520c91d29ca306488364aed81a7c4b2, type: 3}
+  fightClip: {fileID: 8300000, guid: 093561164761ab04ebd5be4f1f1933c9, type: 3}
 --- !u!136 &136175472141826554
 CapsuleCollider:
   m_ObjectHideFlags: 1

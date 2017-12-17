@@ -325,6 +325,7 @@ MonoBehaviour:
   can: {fileID: 712712866}
   restartButton: {fileID: 4784938}
   quitButton: {fileID: 1458312335}
+  main: {fileID: 1924519313}
 --- !u!224 &662130685
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1052,7 +1053,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 0
+    m_RotationOrder: 4
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:

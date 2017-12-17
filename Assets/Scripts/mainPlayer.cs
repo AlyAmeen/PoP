@@ -14,7 +14,7 @@ public class mainPlayer : MonoBehaviour {
     public static bool stopTime = false;
 
     float health = 100;
-    int sandOfTimes = 0;
+   static int sandOfTimes = 0;
 
     float sandOfTimeTimer = 0;
 
@@ -43,20 +43,33 @@ public class mainPlayer : MonoBehaviour {
     float gameOverTimer = 0;
     public Text playerHealthText;
     public Text sandOfTimeText;
+    public Text enemiesLeftText;
 
     public AudioClip footSteps;
     public AudioClip die;
     public AudioClip collectible;
 
+    public AudioClip punchClip;
+
     AudioSource mySource;
+    public float attackDis = 4;
+    public Boss boss;
+
+    public float multiplier = 1;
+
+    float winTimer = 4;
     // Use this for initialization
     void Start () {
-		anim = GetComponent<Animator> ();
+        sandOfTimes = 0;
+        stopTime = false;
+        anim = GetComponent<Animator> ();
 		director = GetComponent<PlayableDirector> ();
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
         mySource = GetComponent<AudioSource>();
 
         mySource.clip = footSteps;
+
+
 
     }
 	void OnTriggerEnter(Collider c){
@@ -65,7 +78,8 @@ public class mainPlayer : MonoBehaviour {
         if (c.gameObject.CompareTag("Collectible"))
         {
             GameObject.Destroy(c.gameObject);
-            sandOfTimes++;  
+            sandOfTimes++;
+            mySource.PlayOneShot(collectible);
         }
         bool allEnemiesDead = true;
         Debug.Log(enemies.Length);
@@ -100,14 +114,15 @@ public class mainPlayer : MonoBehaviour {
         isDead = true;
         anim.SetTrigger("Dead");
     }
-    public void GetHit()
+    public void GetHit(float hit = 10)
     {
 
         if (isBlocking || rollTime > 0)
             return;
 
+        Debug.Log("player hit by " + hit);
         hitEffect.GotHit();
-        health -= 10;
+        health -= hit;
         if (health <= 0)
             Die();
 
@@ -123,16 +138,57 @@ public class mainPlayer : MonoBehaviour {
             float dis = Vector3.Distance(enemy.transform.position, transform.position);
             // Calculate the angle between the forward vector of the player and the vector pointing to the enemy
             float angle = Vector3.Angle(transform.forward, enemyDir);
-            if (angle <= 90 && dis <= 4 && !g.IsDead)
+            if (angle <= 90 && dis <= attackDis && !g.IsDead)
             {
                 g.GetHit();
+                mySource.PlayOneShot(punchClip);
+
+                break;
             }
+        }
+        if (boss != null)
+        {
+            Vector3 enemyDir = boss.transform.position - transform.position;
+
+            float dis = Vector3.Distance(boss.transform.position, transform.position);
+            // Calculate the angle between the forward vector of the player and the vector pointing to the enemy
+            float angle = Vector3.Angle(transform.forward, enemyDir);
+            if (angle <= 90 && dis <= attackDis && !boss.IsDead)
+            {
+                boss.GetHit();
+                mySource.PlayOneShot(punchClip);
+            }
+
         }
 
     }
     // Update is called once per frame
     void Update() {
 
+        if (enemiesLeftText != null)
+        {
+            int enemiesLength = enemies.Length;
+            foreach (GameObject enemy in enemies)
+            {
+                patrolGuard g = enemy.GetComponent<patrolGuard>();
+
+                if (g.IsDead)
+                {
+                    enemiesLength--;
+
+                }
+            }
+            enemiesLeftText.text = "Enemies left : " + enemiesLength;
+        }
+            if (boss != null)
+        {
+            if (boss.IsDead)
+            {
+                winTimer -= Time.deltaTime;
+                if (winTimer <= 0 )
+                Application.LoadLevel(Application.loadedLevel + 1);
+            }
+        }
         if (isDead)
         {
             gameOverTimer += Time.deltaTime;
@@ -146,7 +202,7 @@ public class mainPlayer : MonoBehaviour {
     stopControlsAttack -= Time.deltaTime;
         if (stopControlsAttack > 0)
         {
-            if (stopControlsAttack < 0.4f && !hitEnemyFrame)
+            if (stopControlsAttack < 0.6f && !hitEnemyFrame)
             {
                 hitEnemyFrame = true;
                 HitEnemy();
@@ -215,17 +271,21 @@ public class mainPlayer : MonoBehaviour {
             transform.forward = savedWallNormal;
         RaycastHit wallHit;
         if (Physics.Linecast(transform.position + new Vector3(0, 1.5f, 0),
-            transform.position + new Vector3(0, 1.5f, 0) + (transform.forward * 5), out wallHit, mask))
+            transform.position + (new Vector3(0, 1.5f, 0) * multiplier) + 
+            (transform.forward * 5) * multiplier, out wallHit, mask))
         {
             Debug.Log(wallHit.collider.gameObject.name);
         }
 
-            Debug.DrawLine(transform.position + new Vector3(0, 1, 0), transform.position + new Vector3(0, 1, 0) + (transform.forward * 5));
+            Debug.DrawLine(transform.position + new Vector3(0, 1, 0) * multiplier
+                , transform.position + new Vector3(0, 1, 0) + (transform.forward * 5 * multiplier));
         if (Input.GetKeyDown(KeyCode.C))
         {
          
         
-            if (Physics.Linecast(transform.position + new Vector3(0, 1.5f, 0), transform.position + new Vector3(0, 1.5f, 0) + (transform.forward * 1.5f), out wallHit, mask))
+            if (Physics.Linecast(transform.position + new Vector3(0, 1.5f, 0)
+                * multiplier, transform.position +( new Vector3(0, 1.5f, 0) * multiplier) + 
+                (transform.forward * 1.5f * multiplier), out wallHit, mask))
             {
                 Debug.Log("hIT");
                 Vector3 normal = wallHit.normal;
@@ -276,7 +336,6 @@ public class mainPlayer : MonoBehaviour {
                 sandOfTimes -= 1;
                 sandOfTimeTimer = 5;
                 stopTime = true;
-                mySource.PlayOneShot(collectible);
             }
         }
         if (stopTime)

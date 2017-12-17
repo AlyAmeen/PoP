@@ -43,9 +43,14 @@ public class patrolGuard : MonoBehaviour {
     public AudioClip walking;
     public AudioClip hitClip;
     public AudioClip dieClip;
+    public AudioClip fightClip;
 
     AudioSource mySrc;
+
+   
 	void Start () {
+
+        
         startingPos = transform.position;
         agent = GetComponent<NavMeshAgent>();
         //player = GameObject.FindGameObjectsWithTag ("pp ");
@@ -60,6 +65,7 @@ public class patrolGuard : MonoBehaviour {
 		GotoNextPoint();
 
         mySrc = GetComponent<AudioSource>();
+        mySrc.volume = PlayerPrefs.GetFloat("effect1");
         mySrc.clip = walking;
 	}
 
@@ -94,7 +100,7 @@ public class patrolGuard : MonoBehaviour {
         }
         if (!agent.isStopped)
         {
-            mySrc.pitch = 3;
+           // mySrc.pitch = 3;
             if (!mySrc.isPlaying)
                 mySrc.Play();
         }
@@ -208,11 +214,14 @@ public class patrolGuard : MonoBehaviour {
         Vector3 c = agent.transform.position;
         float distance = Vector3.Distance(p, c);
         if (distance < attackThreshHold)
-        player.GetHit();
+        {
+            player.GetHit();
+
+            mySrc.PlayOneShot(hitClip);
+        }
     }
     public void GetHit()
     {
-        mySrc.PlayOneShot(hitClip);
         hp -= 10;
         if (hp <= 0)
         {
@@ -239,9 +248,13 @@ public class patrolGuard : MonoBehaviour {
 				Debug.Log("ana da5lt");
 				anim.SetBool("isAattacking",false);
 				anim.SetBool("isRunning",true);
-				Debug.Log ("ana 5aragt");
 
-                currentState = State.Chasing;
+                if (currentState != State.Chasing)
+                {
+                    mySrc.PlayOneShot(fightClip,PlayerPrefs.GetFloat("speech",1));
+                    Debug.Log("fight");
+                }
+                    currentState = State.Chasing;
 				target = player.gameObject;
 
                 Debug.Log("is here");

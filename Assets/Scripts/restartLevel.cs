@@ -8,8 +8,10 @@ public class restartLevel : MonoBehaviour {
 	static string lastScene;
 	static string currentScene;
 	void Start(){
-		changeScene ("scenes/gameOver");
-	}
+        currentScene = Application.loadedLevelName;
+        lastScene = Application.loadedLevelName;
+        //changeScene ("scenes/gameOver");
+    }
 	public static void changeScene(string sceneName){
 		lastScene = "scenes/"+SceneManager.GetActiveScene().name;
 		currentScene = sceneName;

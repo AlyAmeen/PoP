@@ -6,23 +6,23 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/scenes/levelOne.unity
-    guid: 6b148a80247cfe84db44adae1b23d916
-  - enabled: 1
-    path: Assets/scenes/bossLevel.unity
-    guid: 6759ed43a60a27941ab18de3fdafa815
+    path: Assets/scenes/mainMenu.unity
+    guid: 95ba869b90e171d45ba4864df6275277
   - enabled: 1
     path: Assets/scenes/gameOver.unity
     guid: e21cc68459d75bb448729600e2b9fc1e
   - enabled: 1
-    path: Assets/scenes/levelTwo.unity
-    guid: d53d56a9c34c0bb4c8907df3d27371e7
-  - enabled: 1
-    path: Assets/scenes/mainMenu.unity
-    guid: 95ba869b90e171d45ba4864df6275277
-  - enabled: 1
     path: Assets/scenes/mainScene.unity
     guid: f73bfdc51c9d7774192ca89ca25111d9
+  - enabled: 1
+    path: Assets/scenes/level 2.unity
+    guid: ab5224660ffb6ae4b8b511062aebc80b
+  - enabled: 1
+    path: Assets/scenes/Boss Level.unity
+    guid: bfc9df2f57e08494cb0c8ccf7def78b7
+  - enabled: 1
+    path: Assets/scenes/credits_roll.unity
+    guid: d874b3a43b1635d49b5c27faa40fad71
   - enabled: 1
     path: Assets/scenes/pauseScene.unity
     guid: ae0f439d9822e744daad1e626263ee1d
